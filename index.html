@@ -1,19 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Minesweeper</title>
+  <title>Viking Minesweeper Test</title>
   <link rel="stylesheet" href="index.css"></link>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 <center>
-  <main>
+  <nav>
+    <div style="display:inline">
+      choose difficulty : 
+        <button value="easy" id="btn1">Easy</button>
+        <button value="medium" id="btn2">Medium</button>
+        <button value="hard" id="btn3">Hard</button>
+    </div>
+    <div style="display:inline">
+     
+    </div>
+    <div>
+
+    </div>
     <div id="gameBoard"></div>
     <div>Flags left: <span id='flagsRemain'></span></div>
-    <div id="finalResult"></div>
-  </main>
-
+    <hr>
+    <div id="finalResult" style="color:red;"></div>
 </center>
 
 <script src="minesweeper.js" charset="utf-8"></script>
