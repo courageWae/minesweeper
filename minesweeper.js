@@ -174,18 +174,49 @@ function setActionEvents( cell )
   cell.addEventListener('click', function() 
   {
     revealed(cell); 
-  });
+  }); //Left click
+
 
   cell.oncontextmenu = function(e) 
   {
     e.preventDefault();
-    attachFlag(cell);
-  }
+   attachFlag(cell);
+  }//Right click
+  
 }
 
 function revealed( cell ) 
 {
+  let cellId = cell.getAttribute("id");
   if (isGameOver) return 1;
+
+  //middle Click
+  cell.onauxclick = function(e) 
+  { 
+    e.preventDefault(); 
+    allCells.forEach( cell => 
+    {
+      if(cell.classList.contains('revealed') &&  cell.getAttribute("data") > 0 )
+      {
+        if( allCells[parseInt(cellId) - 1].classList.contains('flag') && allCells[parseInt(cellId) + 1] )
+        {
+          allCells.forEach( cell => 
+          {
+            if( !(cell.classList.contains('empty') && cell.classList.contains('flag')) )
+            {
+              if(cell.getAttribute('data') > 0 )
+              {
+                cell.innerHTML = cell.getAttribute('data');
+              }
+              cell.classList.add('revealed'); 
+            } 
+          });
+        }
+       
+      }
+    });
+  }//
+
   if(cell.classList.contains('flag'))
   {
     cell.setAttribute('onClick', 'return false');
@@ -198,16 +229,17 @@ function revealed( cell )
     let total = cell.getAttribute('data');
     if (total !=0) 
     {
+      cell.classList.remove('empty');
       cell.classList.add('revealed')
       cell.innerHTML = total
       return
     }
   }
- // if(cell.classList.contains('num')) cell.innerHTML = cell.getAttribute('data');
 
   if (cell.classList.contains('revealed') || cell.classList.contains('flag')) return 1 
   
   //checkSquare(cell.id);
+  cell.classList.remove('empty');
   cell.classList.add('revealed');
 }
 
