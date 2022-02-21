@@ -7,25 +7,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-<center>
-  <nav>
-    <div style="display:inline">
-      choose difficulty : 
-        <button value="easy" id="btn1">Easy</button>
-        <button value="medium" id="btn2">Medium</button>
-        <button value="hard" id="btn3">Hard</button>
+  <div>
+    <h1> Minesweeper </h1>
+    <div style = "display:inline">
+      Level :
     </div>
-    <div style="display:inline">
-     
-    </div>
-    <div>
+    <div style = "display:inline">
+      <select id="difficulty" onchange="setDifficulty();">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
 
+      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span>Remaining Mines:</span>
+      <span id="flagCount" > </span>
+      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span>Time:</span>
+      <span id="timer" > </span>
+      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
     </div>
-    <div id="gameBoard"></div>
+   
+    <center>
+      <div id="gameBoard"></div>
+    </center>
     <div>Flags left: <span id='flagsRemain'></span></div>
     <hr>
     <div id="finalResult" style="color:red;"></div>
-</center>
+  </div>
 
 <script src="minesweeper.js" charset="utf-8"></script>
 </body>

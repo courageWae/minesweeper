@@ -37,9 +37,9 @@ div
   height: 20px;
   width: 20px;
   border: 2px solid;
-  background-color: #363635;
+  background-color: #80807e;
+  color:white;
   border-color: #9c998d;
-  /* box-sizing: border-box; */
 }
 
 .bomb 
@@ -48,26 +48,6 @@ div
   width: 20px;
   border: 2px solid;
   border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
-  /* box-sizing: border-box; */
 }
 
-.one 
-{
-  color: #e76346;
-}
-
-.two 
-{
-  color: #4199d3;
-}
-
-.three 
-{
-  color: #57da59;
-}
-
-.four
-{
-  color: #bb41d3;
-}
 
