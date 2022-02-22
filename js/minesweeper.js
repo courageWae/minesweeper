@@ -10,18 +10,27 @@ let adjacentFlag = 0;
 let numberOfClicks = 0;
 let difficulty = new Array([9,9], [16,16], [30,16]);
 let finalResult = document.getElementById('finalResult');
-let flagsRemain = document.getElementById('flagsRemain');
+let flagsRemain = document.getElementById('flagCount');
+let smiley = document.getElementById("smiley");
 
 
-var firstClick = function(cell) {
-  var executed = false;
-  return function() {
-      if (!executed) {
-          executed = true;
-          console.log(cell);
-      }
-  };
-};
+// var firstClick = function(cell) {
+//   var executed = false;
+//   return function() {
+//       if (!executed) {
+//           executed = true;
+//           console.log(cell);
+//       }
+//   };
+// };
+
+
+startGame();
+
+function startGame()
+{
+  setDifficulty();
+}
 
 function hardLevel()
 {
@@ -109,8 +118,7 @@ function setGameBoard( totalNumberOfCells, numberOfBombs)
     let total = 0
     const isLeftEdge = (i % totalNumberOfCells === 0)
     const isRightEdge = (i % totalNumberOfCells === totalNumberOfCells -1)
-
-    
+   
     switch(gameLevel)
     {
       case "easy" :
@@ -187,7 +195,8 @@ function setActionEvents( cell )
   // This code is triggered when there is a left click
   cell.addEventListener('click', function() 
   {
-    console.log(numberOfClicks);
+    startTimer();
+
     // Checks to see if first click contains a bomb.
     if(numberOfClicks === 0)
     {
@@ -201,18 +210,15 @@ function setActionEvents( cell )
             allCells[i].classList.add('bomb');
             allCells[i].classList.remove('empty');
             allCells[i].removeAttribute('data');
-
-            numberOfClicks++;
-            break;
           }
-
+          break;
         }
         cell.classList.remove("bomb");
+        numberOfClicks++;
       }
-      return 1;
     }
     revealed(cell); 
-    numberOfBombs++;
+    numberOfClicks++;
   });
 
   // This code is triggered when there is a right click
@@ -227,7 +233,7 @@ function setActionEvents( cell )
 // This function reveals a cell when triggered.
 function revealed( cell ) 
 {
-  firstClick(cell);
+  //firstClick(cell);
   let cellId = cell.getAttribute("id");
   if (isGameOver) return 1;
 
@@ -323,7 +329,7 @@ function attachFlag( cell )
       // Increment number of flags used and append remaining flag to the cells innerHtml
       numberOfFlags++;
       flagsRemain.innerHTML = numberOfBombs - numberOfFlags ;
-      //Minesweeper.checkForWin();
+      checkForWin();
     }
     else
     {
@@ -516,74 +522,8 @@ function checkAdjacentCell(currentId)
   } 
 }
 
-  //check neighboring squares once square is clicked
-// function checkSquare(currentId) 
-// {
-  // const isLeftEdge = (currentId % sizeOfCell === 0)
-  // const isRightEdge = (currentId % sizeOfCell === sizeOfCell - 1)
-
-  // setTimeout(() => {
-  //   if (currentId > 0 && !isLeftEdge) 
-  //   {
-  //     const newId = allCells[parseInt(currentId) -1].id
-  //     //const newId = parseInt(currentId) - 1   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId > 9 && !isRightEdge) 
-  //   {
-  //     const newId =  allCells[parseInt(currentId) +1 - sizeOfCell].id
-  //     //const newId = parseInt(currentId) +1 -width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId > 10) 
-  //   {
-  //     const newId =  allCells[parseInt(currentId - sizeOfCell)].id
-  //     //const newId = parseInt(currentId) -width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId > 11 && !isLeftEdge) 
-  //   {
-  //     const newId =  allCells[parseInt(currentId) -1 - sizeOfCell].id
-  //     //const newId = parseInt(currentId) -1 -width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId < 98 && !isRightEdge) 
-  //   {
-  //     const newId = allCells[parseInt(currentId) + 1].id
-  //     //const newId = parseInt(currentId) +1   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId < 90 && !isLeftEdge) 
-  //   {
-  //     const newId = allCells[parseInt(currentId)  -1 + sizeOfCell].id
-  //     //const newId = parseInt(currentId) -1 +width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId < 88 && !isRightEdge) 
-  //   {
-  //     const newId = allCells[parseInt(currentId) +1 + sizeOfCell].id
-  //     //const newId = parseInt(currentId) +1 +width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  //   if (currentId < 89) 
-  //   {
-  //     const newId = allCells[parseInt(currentId)  + sizeOfCell].id
-  //     //const newId = parseInt(currentId) +width   ....refactor
-  //     const newSquare = document.getElementById(newId)
-  //     revealed(newSquare)
-  //   }
-  // }, 10)
-// }
 
 //game over
-
 function gameOver() 
 {
   let finalResult = document.getElementById('finalResult');
@@ -597,150 +537,66 @@ function gameOver()
     }
   });
   finalResult.innerHTML = "You lost. You are not a <b>VIKING</b>. GAME OVER !"; 
+  
   isGameOver = true; 
+  smiley.classList.add('face_lose');
+  stopTimer();
   return 1;
 }
 
-
-
-
-
-
-
-
-
-class Minesweeper
+//check for win
+function checkForWin() 
 {
-  static finalResult = document.getElementById('finalResult');
- 
-  static numberOfBombs = 20
-  static flags = 0;
-  static squares = new Array();
-  static isGameOver = false;
+  let matches = 0
 
-
- 
-
-  
-
-  // The begining of the game
-  static createGameUI() 
+  for (let i = 0; i < allCells.length; i++) 
   {
-    setDifficulty();
-    
-    // document.getElementById('flagsRemain').innerHTML = this.numberOfBombs;
-    // const numberOfCells = Minesweeper.countNumberOfCells( Minesweeper.createMatrix(31,9));
-
-    // // Creating an empty array with the length equals to the number of bombs ie. 20
-    // const arrayOfBombs = Array(this.numberOfBombs).fill('bomb')
-    // const cellsWithoutBombs = numberOfCells - this.numberOfBombs;
-    
-    // // Creating an empty array with the length equals to  the
-    // const arrayOfCellsWithouBombs = Array(cellsWithoutBombs).fill('valid')
-    // const allCells = arrayOfCellsWithouBombs.concat(arrayOfBombs)
-    // const shuffledArray = allCells.sort(() => Math.random() -0.5)
-    
-    // for(let i = 0; i < numberOfCols*numberOfRows; i++) 
-    // {
-    //   console.log(i);
-    //   const square = document.createElement('div');
-    //   square.setAttribute('id', i);
-    //   square.classList.add(shuffledArray[i]);
-    //   document.getElementById('gameBoard').appendChild(square);
-    //   this.squares.push(square);
-
-    //   //normal click
-    //   square.addEventListener('click', function(e) 
-    //   {
-    //     Minesweeper.revealed(square)
-    //   });
-
-    //   //cntrl and left click
-    //   square.oncontextmenu = function(e) 
-    //   {
-    //     e.preventDefault();
-    //     Minesweeper.addFlag(square);
-    //   }
-    // }
-    // console.log(this.squares);
-    // //add numbers
-    // for (let i = 0; i < this.squares.length; i++) {
-    //   let total = 0
-    //   const isLeftEdge = (i % this.sizeOfSquares === 0)
-    //   const isRightEdge = (i % this.sizeOfSquares === this.sizeOfSquares -1)
-
-    //   if (this.squares[i].classList.contains('valid')) {
-    //     if (i > 0 && !isLeftEdge && this.squares[i -1].classList.contains('bomb')) total ++;
-    //     if (i > 9 && !isRightEdge && this.squares[i +1 - this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     if (i > 10 && this.squares[i - this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     if (i > 11 && !isLeftEdge && this.squares[i -1 - this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     if (i < 98 && !isRightEdge && this.squares[i +1].classList.contains('bomb')) total ++
-    //     if (i < 90 && !isLeftEdge && this.squares[i -1 + this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     if (i < 88 && !isRightEdge && this.squares[i +1 + this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     if (i < 89 && this.squares[i + this.sizeOfSquares].classList.contains('bomb')) total ++;
-    //     this.squares[i].setAttribute('data', total);
-    //   }
-    // }
+    if (allCells[i].classList.contains('flag') && allCells[i].classList.contains('bomb')) 
+    {
+      matches ++
+    }
+    if (matches === numberOfBombs) 
+    {
+      finalResult.innerHTML = 'You are a <b>viking like RAGNAR</b>, YOU WIN!'
+      smiley.classList.remove('face_down');
+      smiley.classList.add('face_win');
+      isGameOver = true
+    }
   }
-
-
-
-
-
-
-
-//    //add Flag with right click
-
-
-//   //game over
-//   static gameOver() 
-//   {
-//     Minesweeper.finalResult.innerHTML = 'BOOM! Game Over!';
-//     Minesweeper.isGameOver = true;
-
-//     //show ALL the bombs
-//     this.squares.forEach(square => 
-//     {
-//       if (square.classList.contains('bomb')) 
-//       {
-//         square.innerHTML = '💣'
-//         square.classList.remove('bomb')
-//         square.classList.add('checked')
-//       }
-//     })
-//   }
-
-//   //check for win
-//   static checkForWin() 
-//   {
-//     let squares = this.squares;
-
-//     ///simplified win argument
-//     let matches = 0
-
-//     for (let i = 0; i < squares.length; i++) 
-//     {
-//       if (squares[i].classList.contains('flag') && squares[i].classList.contains('bomb')) 
-//       {
-//         matches ++
-//       }
-//       if (matches === this.numberOfBombs) 
-//       {
-//         this.status.innerHTML = 'YOU WIN!'
-//         this.isGameOver = true
-//       }
-//     }
-//   }
-// }
-
-
-
-
 }
 
 
+function smileyDown() 
+{
+  smiley.classList.add("face_down");
+}
 
-//console.log( countNumberOfCells( createMatrix(9,9)));
-Minesweeper.createGameUI();
+function smileyUp() 
+{
+  smiley.classList.remove("face_down");
+}
+
+function startTimer() 
+{
+  timeValue = 0;
+  window.setInterval(onTimerTick, 1000);
+}
+
+function onTimerTick() 
+{
+  timeValue++;
+  updateTimer();
+}
+
+function stopTimer()
+{
+  clearTimeout(startTimer());
+}
+
+function updateTimer() 
+{
+  document.getElementById("timer").innerHTML = timeValue;
+}
+
 
  

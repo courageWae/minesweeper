@@ -42,4 +42,24 @@ div
   border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
 }
 
+.smiley {
+  margin:auto;
+  width: 26px;
+  height: 26px;
+  background-image: url("../images/face_up.png");
+}
+
+.face_down {
+  background-image: url("../images/face_down.png");
+}
+.face_limbo {
+  background-image: url("../images/face_limbo.png");
+}
+.face_lose {
+  background-image: url("../images/face_lose.png");
+}
+.face_win {
+  background-image: url("../images/face_win.png");
+}
+
 

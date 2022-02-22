@@ -2,9 +2,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Viking Minesweeper Test</title>
-  <link rel="stylesheet" href="index.css"></link>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+  <title>Minesweeper</title>
+  <link type="text/css" rel="stylesheet" href="./css/style.css" />
 </head>
 <body>
   <div>
@@ -27,15 +26,15 @@
       <span id="timer" > </span>
       <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
     </div>
+    <div id="smiley" class="smiley" onmousedown="smileyDown();" onmouseup="smileyUp();"></div>
    
     <center>
       <div id="gameBoard"></div>
     </center>
-    <div>Flags left: <span id='flagsRemain'></span></div>
     <hr>
     <div id="finalResult" style="color:red;"></div>
   </div>
 
-<script src="minesweeper.js" charset="utf-8"></script>
+<script src="js/minesweeper.js" charset="utf-8"></script>
 </body>
 </html>
