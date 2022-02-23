@@ -12,17 +12,8 @@ let difficulty = new Array([9,9], [16,16], [30,16]);
 let finalResult = document.getElementById('finalResult');
 let flagsRemain = document.getElementById('flagCount');
 let smiley = document.getElementById("smiley");
-
-
-// var firstClick = function(cell) {
-//   var executed = false;
-//   return function() {
-//       if (!executed) {
-//           executed = true;
-//           console.log(cell);
-//       }
-//   };
-// };
+let timer = 0;
+// let trackFlagAndRevealCell = 0;
 
 
 startGame();
@@ -89,7 +80,6 @@ function setDifficulty()
   var difficultyType = document.getElementById("difficulty");
   difficultyType = difficultyType.options[difficultyType.selectedIndex].text;
 
-  console.log(difficultyType);
   if(difficultyType === 'Easy') easyLevel();
   if(difficultyType === 'Medium') mediumLevel();
   if(difficultyType === 'Hard') hardLevel(); 
@@ -210,8 +200,9 @@ function setActionEvents( cell )
             allCells[i].classList.add('bomb');
             allCells[i].classList.remove('empty');
             allCells[i].removeAttribute('data');
+
+            break;
           }
-          break;
         }
         cell.classList.remove("bomb");
         numberOfClicks++;
@@ -233,9 +224,9 @@ function setActionEvents( cell )
 // This function reveals a cell when triggered.
 function revealed( cell ) 
 {
-  //firstClick(cell);
   let cellId = cell.getAttribute("id");
   if (isGameOver) return 1;
+  // checkForWin();
 
   //This code is triggered when there is a middle click
   cell.onauxclick = function(e) 
@@ -303,10 +294,9 @@ function revealed( cell )
   }
   // If check is revealed or flagged do nothing.
   if (cell.classList.contains('revealed') || cell.classList.contains('flag')) return 1 ;
-  checkAdjacentCell(cellId);
 
-  //cell.classList.remove('empty');
   cell.classList.add('revealed');
+  checkAdjacentCell(cellId);
 }
 
 // This function attaches flags to a cell
@@ -329,7 +319,7 @@ function attachFlag( cell )
       // Increment number of flags used and append remaining flag to the cells innerHtml
       numberOfFlags++;
       flagsRemain.innerHTML = numberOfBombs - numberOfFlags ;
-      checkForWin();
+      checkForFlagWin();
     }
     else
     {
@@ -520,6 +510,7 @@ function checkAdjacentCell(currentId)
       }
     }, 10)
   } 
+  
 }
 
 
@@ -536,34 +527,51 @@ function gameOver()
       cell.classList.add('revealed');
     }
   });
-  finalResult.innerHTML = "You lost. You are not a <b>VIKING</b>. GAME OVER !"; 
+  stopTimer();
+  finalResult.innerHTML = "You lost. your score is :"+timer+" You are not a <b>VIKING</b>. GAME OVER !"; 
   
   isGameOver = true; 
   smiley.classList.add('face_lose');
-  stopTimer();
   return 1;
 }
 
 //check for win
-function checkForWin() 
+function checkForFlagWin() 
 {
-  let matches = 0
-
+  let flagAndBombMatch = 0
   for (let i = 0; i < allCells.length; i++) 
   {
     if (allCells[i].classList.contains('flag') && allCells[i].classList.contains('bomb')) 
     {
-      matches ++
+      flagAndBombMatch ++
     }
-    if (matches === numberOfBombs) 
+
+    if (flagAndBombMatch === numberOfBombs) 
     {
-      finalResult.innerHTML = 'You are a <b>viking like RAGNAR</b>, YOU WIN!'
+      stopTimer();
+      finalResult.innerHTML = "Your score is :"+timer+"s You are a <b>viking like RAGNAR</b>, YOU WON!";
       smiley.classList.remove('face_down');
       smiley.classList.add('face_win');
       isGameOver = true
     }
   }
 }
+
+// function checkForWin()
+// {
+//   for(let i=0; i< allCells.length; i++)
+//   {
+//     if(allCells[i].classList.contains('revealed') ) trackFlagAndRevealCell++;
+//   }
+//   if(trackFlagAndRevealCell === (totalNumberOfCells-numberOfBombs)) 
+//   {
+//     finalResult.innerHTML = 'You are a <b>viking like RAGNAR</b>, YOU WON!'
+//     smiley.classList.remove('face_down');
+//     smiley.classList.add('face_win');
+//     isGameOver = true
+//   }
+
+// }
 
 
 function smileyDown() 
@@ -590,12 +598,18 @@ function onTimerTick()
 
 function stopTimer()
 {
-  clearTimeout(startTimer());
+  let time = document.getElementById('timer');
+  console.log(time);
+  timer = time.innerHTML;
+  time.setAttribute('id',"");
 }
 
 function updateTimer() 
 {
-  document.getElementById("timer").innerHTML = timeValue;
+  if(document.getElementById("timer"))
+  {
+    document.getElementById("timer").innerHTML = timeValue;
+  }
 }
 
 
