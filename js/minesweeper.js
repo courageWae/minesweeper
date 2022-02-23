@@ -12,6 +12,7 @@ let difficulty = new Array([9,9], [16,16], [30,16]);
 let finalResult = document.getElementById('finalResult');
 let flagsRemain = document.getElementById('flagCount');
 let smiley = document.getElementById("smiley");
+let gameBoard = document.getElementById('gameBoard');
 let timer = 0;
 // let trackFlagAndRevealCell = 0;
 
@@ -25,7 +26,8 @@ function startGame()
 
 function hardLevel()
 {
-  while(gameBoard.hasChildNodes()) gameBoard.removeChild(gameBoard.firstChild);
+  allCells = new Array();
+  gameBoard.innerHTML = " ";
   gameLevel = 'hard';
   finalResult.innerHTML = "";
   gameBoard.style.height = "420px";
@@ -42,7 +44,8 @@ function hardLevel()
 
 function easyLevel()
 {
-  while(gameBoard.hasChildNodes()) gameBoard.removeChild(gameBoard.firstChild);
+  allCells = new Array();
+  gameBoard.innerHTML = " ";
   gameLevel = 'easy';
   finalResult.innerHTML = "";
   gameBoard.style.height = "230px";
@@ -59,7 +62,8 @@ function easyLevel()
 
 function mediumLevel()
 {
-  while(gameBoard.hasChildNodes()) gameBoard.removeChild(gameBoard.firstChild);
+  allCells = new Array();
+  gameBoard.innerHTML = " ";
   gameLevel = 'medium';
   finalResult.innerHTML = "";
   gameBoard.style.height = "400px";
@@ -76,7 +80,6 @@ function mediumLevel()
 
 function setDifficulty()
 {
-  const gameBoard = document.getElementById('gameBoard');
   var difficultyType = document.getElementById("difficulty");
   difficultyType = difficultyType.options[difficultyType.selectedIndex].text;
 
@@ -200,9 +203,9 @@ function setActionEvents( cell )
             allCells[i].classList.add('bomb');
             allCells[i].classList.remove('empty');
             allCells[i].removeAttribute('data');
-
-            break;
           }
+
+          break;
         }
         cell.classList.remove("bomb");
         numberOfClicks++;
@@ -518,8 +521,7 @@ function checkAdjacentCell(currentId)
 function gameOver() 
 {
   let finalResult = document.getElementById('finalResult');
-  let cells = gameBoard.childNodes;
-  cells.forEach( (cell) => 
+  allCells.forEach( (cell) => 
   {
     if (cell.classList.contains('bomb')) 
     {
