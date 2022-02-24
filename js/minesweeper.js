@@ -271,7 +271,7 @@ function revealed( cell )
       if(cell.classList.contains('revealed') &&  cell.getAttribute('data') > 0 )
       {
         // Trying to get surrounding adjacent cells (Diagonal, Horizontal, Vertical). 
-        if( cell.getAttribute('data') == getAdjacentCells(cell.getAttribute('id')) )
+        if( cell.getAttribute('data') == getAdjacentCells(cell.id) )
         {
           //Looping through all cells if condition is met
           allCells.forEach( cell => 
@@ -364,7 +364,6 @@ function attachFlag( cell )
 // This function get the adjacent flagged cells of a cell.
 function getAdjacentCells(cellId)
 {
-  //NB. This code needs to be looked at. there is an error in here.
   if(allCells[parseInt(cellId) - 1].classList.contains('flag')) adjacentFlag++; 
   if(allCells[parseInt(cellId) + 1].classList.contains('flag')) adjacentFlag++;
   if(allCells[parseInt(cellId) - numberOfCols].classList.contains('flag')) adjacentFlag++;
@@ -411,77 +410,38 @@ function checkAdjacentCell(currentId)
         const cell = document.getElementById(cellId)
         revealed(cell)
       }
-      if (currentId < 72 && !isRightEdge) 
-      {
-        const cellId = allCells[parseInt(currentId) +1].id
-        const cell = document.getElementById(cellId)
-        revealed(cell)
-      }
-      if (currentId < 79 && !isLeftEdge) 
-      {
-        const cellId = allCells[parseInt(currentId) -1 +numberOfCols].id
-        const cell = document.getElementById(cellId)
-        revealed(cell)
-      }
-      if (currentId < 70  && !isRightEdge) 
-      {
-        const cellId = allCells[parseInt(currentId) +1 +numberOfCols].id
-        const cell = document.getElementById(cellId)
-        revealed(cell)
-      }
-      if (currentId < 71) 
-      {
-        const cellId = allCells[parseInt(currentId) +numberOfCols].id
-        const cell = document.getElementById(cellId);
-        revealed(cell);
-      }
     }, 10);
   }
 
   if(gameLevel == 'medium')
   {
-    setTimeout(() => {
-      if (currentId > 0 && !isLeftEdge) {
+    setTimeout(() => 
+    {
+      if (currentId > 0 && !isLeftEdge) 
+      {
         const newId = allCells[parseInt(currentId) -1].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols-1) && !isRightEdge) {
+      if (currentId > 15 && !isRightEdge) 
+      {
         const newId = allCells[parseInt(currentId) +1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > numberOfCols) {
+      if (currentId > 16) 
+      {
         const newId = allCells[parseInt(currentId -numberOfCols)].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols+1) && !isLeftEdge) {
+      if (currentId > 17 && !isLeftEdge) 
+      {
         const newId = allCells[parseInt(currentId) -1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-        if (currentId < (totalNumberOfCells-2) && !isRightEdge) {
-          const newId = allCells[parseInt(currentId) +1].id
-          const newSquare = document.getElementById(newId)
-          revealed(newSquare)
-        }
-        if (currentId < (totalNumberOfCells-numberOfCols) && !isLeftEdge) {
-          const newId = allCells[parseInt(currentId) -1 +numberOfCols].id
-          const newSquare = document.getElementById(newId)
-          revealed(newSquare)
-        }
-        if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !isRightEdge) {
-          const newId = allCells[parseInt(currentId) +1 +numberOfCols].id
-          const newSquare = document.getElementById(newId)
-          revealed(newSquare)
-        }
-        if (currentId < (totalNumberOfCells-(numberOfCols+1))) {
-          const newId = allCells[parseInt(currentId) +numberOfCols].id
-          const newSquare = document.getElementById(newId)
-          revealed(newSquare)
-        }
-      }, 10)
+    }, 10)
 
   }
 
@@ -513,30 +473,6 @@ function checkAdjacentCell(currentId)
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }     
-      if (currentId < (totalNumberOfCells-2) && !isRightEdge) 
-      {
-        const newId = allCells[parseInt(currentId) +1].id
-        const newSquare = document.getElementById(newId)
-        revealed(newSquare)
-      }
-      if (currentId < (totalNumberOfCells-numberOfCols) && !isLeftEdge) 
-      {
-        const newId = allCells[parseInt(currentId) -1 +numberOfCols].id
-        const newSquare = document.getElementById(newId)
-        revealed(newSquare)
-      }
-      if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !isRightEdge) 
-      {
-        const newId = allCells[parseInt(currentId) +1 +numberOfCols].id
-        const newSquare = document.getElementById(newId)
-        revealed(newSquare)
-      }
-      if (currentId < (totalNumberOfCells-(numberOfCols+1))) 
-      {
-        const newId = allCells[parseInt(currentId) +numberOfCols].id
-        const newSquare = document.getElementById(newId)
-        revealed(newSquare)
-      }
     }, 10)
   } 
   
