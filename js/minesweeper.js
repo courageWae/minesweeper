@@ -1,3 +1,36 @@
+
+/**
+ * It was really fun trying to develop this game. I had no idea the kind of fun deeply emerged with game development.
+ * It was a pleasure taking this test. 
+ * Taking this test has sparked a new interest in me. Obviously, it's in game development.
+ *
+ * 
+ * 
+ * Due to time constraints, the game wasn't tested across all boards. There might be bugs lurking around in the game. 🙂
+ * or perhaps some functionalityies not working as expected.
+ * 
+ * But things being all equal, this is what I was able to produce in the previous 5 days .
+ * 
+ * 
+ * I hope you are a little bit considerate
+ * 
+ * PS. Courage Waelinam Ahorttor
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let numberOfBombs = 0;
 let numberOfFlags = 0;
 let totalNumberOfCells = 0;
@@ -14,33 +47,29 @@ let flagsRemain = document.getElementById('flagCount');
 let smiley = document.getElementById("smiley");
 let gameBoard = document.getElementById('gameBoard');
 let timer = 0;
-// let trackFlagAndRevealCell = 0;
 
 
+
+
+// GAME STARTS
 startGame();
+
 
 function startGame()
 {
   setDifficulty();
 }
 
-function hardLevel()
+function setDifficulty()
 {
-  allCells = new Array();
-  gameBoard.innerHTML = " ";
-  gameLevel = 'hard';
-  finalResult.innerHTML = "";
-  gameBoard.style.height = "420px";
-  gameBoard.style.width = "720px";
-  numberOfBombs = 99;
-  flagsRemain.innerHTML = numberOfBombs;
-  numberOfCols = difficulty[2][0];
-  numberOfRows = difficulty[2][1];
+  let difficultyType = document.getElementById("difficulty");
+  difficultyType = difficultyType.options[difficultyType.selectedIndex].text;
 
-  let gameArray = createMatrix(numberOfCols, numberOfRows);
-  totalNumberOfCells = countNumberOfCells(gameArray);
-  setGameBoard(totalNumberOfCells, numberOfBombs);
-};
+  if(difficultyType === 'Easy') easyLevel();
+  if(difficultyType === 'Medium') mediumLevel();
+  if(difficultyType === 'Hard') hardLevel(); 
+} 
+
 
 function easyLevel()
 {
@@ -54,11 +83,14 @@ function easyLevel()
   flagsRemain.innerHTML = numberOfBombs;
   numberOfCols = difficulty[0][0];
   numberOfRows = difficulty[0][1];
+  smiley.classList.remove('face_win');
+  smiley.classList.add('face_down');
 
   let gameArray = createMatrix(numberOfCols, numberOfRows);
   totalNumberOfCells = countNumberOfCells(gameArray);
+  changeSmiley();
   setGameBoard(totalNumberOfCells, numberOfBombs);
-};
+}
 
 function mediumLevel()
 {
@@ -72,21 +104,61 @@ function mediumLevel()
   flagsRemain.innerHTML = numberOfBombs;
   numberOfCols = difficulty[1][0];
   numberOfRows = difficulty[1][1];
+  smiley.classList.remove('face_win');
+  smiley.classList.add('face_down');
+  
 
   let gameArray = createMatrix(numberOfCols, numberOfRows);
   totalNumberOfCells = countNumberOfCells(gameArray);
+  changeSmiley();
   setGameBoard(totalNumberOfCells, numberOfBombs);
-};
+}
 
-function setDifficulty()
+function hardLevel()
 {
-  var difficultyType = document.getElementById("difficulty");
-  difficultyType = difficultyType.options[difficultyType.selectedIndex].text;
+  allCells = new Array();
+  gameBoard.innerHTML = ' ';
+  gameLevel = 'hard';
+  finalResult.innerHTML = '';
+  gameBoard.style.height = '420px';
+  gameBoard.style.width = '720px';
+  numberOfBombs = 99;
+  flagsRemain.innerHTML = numberOfBombs;
+  numberOfCols = difficulty[2][0];
+  numberOfRows = difficulty[2][1];
+  let gameArray = createMatrix(numberOfCols, numberOfRows);
+  totalNumberOfCells = countNumberOfCells(gameArray);
+  changeSmiley();
+  setGameBoard(totalNumberOfCells, numberOfBombs);
+}
 
-  if(difficultyType === 'Easy') easyLevel();
-  if(difficultyType === 'Medium') mediumLevel();
-  if(difficultyType === 'Hard') hardLevel(); 
-} 
+function changeSmiley()
+{
+  if(smiley.classList.contains('face_win')) smiley.classList.replace('face_win', 'face_donw');
+  if(smiley.classList.contains('face_lose')) smiley.classList.replace('face_lose', 'face_down'); 
+}
+
+function createMatrix(cols, rows)
+{
+  if(cols == 0 || rows == 0 ) return "Colums or Rows can't be 0";
+  let colArr = new Array(cols);
+  for(let i=0; i<colArr.length; i++)
+  {
+    colArr[i] = new Array(rows);
+  }
+  return colArr;
+}
+
+function countNumberOfCells(gameArray)
+{
+  let totalNumberOfCells = 0;
+  for(let i=0; i<gameArray.length; i++)
+  {
+    for(let j=0; j<gameArray[i].length; j++) totalNumberOfCells++;
+  }
+  return totalNumberOfCells;
+}
+
 
 function setGameBoard( totalNumberOfCells, numberOfBombs)
 {
@@ -162,34 +234,16 @@ function setGameBoard( totalNumberOfCells, numberOfBombs)
   }
 }
 
-function createMatrix(cols, rows)
-{
-  if(cols == 0 || rows == 0 ) return "Colums or Rows can't be 0";
-  let colArr = new Array(cols);
-  for(let i=0; i<colArr.length; i++)
-  {
-    colArr[i] = new Array(rows);
-  }
-  return colArr;
-}
-
-function countNumberOfCells(gameArray)
-{
-  let totalNumberOfCells = 0;
-  for(let i=0; i<gameArray.length; i++)
-  {
-    for(let j=0; j<gameArray[i].length; j++) totalNumberOfCells++;
-  }
-  return totalNumberOfCells;
-}
 
 function setActionEvents( cell )
 {
-  // This code is triggered when there is a left click
+  cell.addEventListener('onmousedown ', function(){
+    smiley.classList.add('face_limbo');
+  });
+
   cell.addEventListener('click', function() 
   {
     startTimer();
-
     // Checks to see if first click contains a bomb.
     if(numberOfClicks === 0)
     {
@@ -219,7 +273,7 @@ function setActionEvents( cell )
   cell.oncontextmenu = function(e) 
   {
     e.preventDefault();
-   attachFlag(cell);
+    attachFlag(cell);
   }
   
 }
@@ -229,18 +283,16 @@ function revealed( cell )
 {
   let cellId = cell.getAttribute("id");
   if (isGameOver) return 1;
-  // checkForWin();
 
   //This code is triggered when there is a middle click
   cell.onauxclick = function(e) 
   { 
     e.preventDefault(); 
-    
-    // Looping through each cell to reveal content.
+
     allCells.forEach( cell => 
     {
       // Check to see if the revealed cell has a number greater than 0.
-      if(cell.classList.contains('revealed') &&  cell.getAttribute("data") > 0 )
+      if(cell.classList.contains('revealed') &&  cell.getAttribute('data') > 0 )
       {
         // Trying to get surrounding adjacent cells (Diagonal, Horizontal, Vertical). 
         if( cell.getAttribute('data') == getAdjacentCells(cell.getAttribute('id')) )
@@ -279,7 +331,6 @@ function revealed( cell )
   // Check to see if the revealed cell contains a bomb.
   if(cell.classList.contains('bomb'))
   {
-    // End Game.
     return gameOver();
   }
   else
@@ -288,7 +339,6 @@ function revealed( cell )
     let totalSurrondingBombs = cell.getAttribute('data');
     if (totalSurrondingBombs != 0) 
     {
-      // Cell is no more empty. Reveal cell and append it's data value to the innerHtml.
       cell.classList.remove('empty');
       cell.classList.add('revealed')
       cell.innerHTML = totalSurrondingBombs;
@@ -338,7 +388,6 @@ function attachFlag( cell )
 // This function get the adjacent flagged cells of a cell.
 function getAdjacentCells(cellId)
 {
-  //NB. This code needs to be looked at. there is an error in here.
   if(allCells[parseInt(cellId) - 1].classList.contains('flag')) adjacentFlag++; 
   if(allCells[parseInt(cellId) + 1].classList.contains('flag')) adjacentFlag++;
   if(allCells[parseInt(cellId) - numberOfCols].classList.contains('flag')) adjacentFlag++;
@@ -354,20 +403,20 @@ function getAdjacentCells(cellId)
 // This function checks adjacent cells and reveals reveals adjacent cells when a cell is empty
 function checkAdjacentCell(currentId) 
 {
-  const isLeftEdge = (currentId % numberOfCols === 0)
-  const isRightEdge = (currentId % numberOfCols === numberOfCols -1)
+  const leftEdge = (currentId % numberOfCols === 0)
+  const rightEdge = (currentId % numberOfCols === numberOfCols -1)
 
   if(gameLevel == 'easy')
   {
     setTimeout(() => 
     {
-      if (currentId > 0 && !isLeftEdge) 
+      if (currentId > 0 && !leftEdge) 
       {
         const cellId = allCells[parseInt(currentId) -1].id;
         const cell = document.getElementById(cellId);
         revealed(cell);
       }
-      if (currentId > 8 && !isRightEdge) 
+      if (currentId > 8 && !rightEdge) 
       {
         const cellId = allCells[parseInt(currentId) +1 -numberOfCols].id
         const cell = document.getElementById(cellId)
@@ -379,25 +428,25 @@ function checkAdjacentCell(currentId)
         const cell = document.getElementById(cellId)
         revealed(cell)
       }
-      if (currentId > 10 && !isLeftEdge) 
+      if (currentId > 10 && !leftEdge) 
       {
         const cellId = allCells[parseInt(currentId) -1 -numberOfCols].id
         const cell = document.getElementById(cellId)
         revealed(cell)
       }
-      if (currentId < 72 && !isRightEdge) 
+      if (currentId < 72 && !rightEdge) 
       {
         const cellId = allCells[parseInt(currentId) +1].id
         const cell = document.getElementById(cellId)
         revealed(cell)
       }
-      if (currentId < 79 && !isLeftEdge) 
+      if (currentId < 79 && !leftEdge) 
       {
         const cellId = allCells[parseInt(currentId) -1 +numberOfCols].id
         const cell = document.getElementById(cellId)
         revealed(cell)
       }
-      if (currentId < 70  && !isRightEdge) 
+      if (currentId < 70  && !rightEdge) 
       {
         const cellId = allCells[parseInt(currentId) +1 +numberOfCols].id
         const cell = document.getElementById(cellId)
@@ -415,12 +464,12 @@ function checkAdjacentCell(currentId)
   if(gameLevel == 'medium')
   {
     setTimeout(() => {
-      if (currentId > 0 && !isLeftEdge) {
+      if (currentId > 0 && !leftEdge) {
         const newId = allCells[parseInt(currentId) -1].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols-1) && !isRightEdge) {
+      if (currentId > (numberOfCols-1) && !rightEdge) {
         const newId = allCells[parseInt(currentId) +1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
@@ -430,22 +479,22 @@ function checkAdjacentCell(currentId)
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols+1) && !isLeftEdge) {
+      if (currentId > (numberOfCols+1) && !leftEdge) {
         const newId = allCells[parseInt(currentId) -1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-        if (currentId < (totalNumberOfCells-2) && !isRightEdge) {
+        if (currentId < (totalNumberOfCells-2) && !rightEdge) {
           const newId = allCells[parseInt(currentId) +1].id
           const newSquare = document.getElementById(newId)
           revealed(newSquare)
         }
-        if (currentId < (totalNumberOfCells-numberOfCols) && !isLeftEdge) {
+        if (currentId < (totalNumberOfCells-numberOfCols) && !leftEdge) {
           const newId = allCells[parseInt(currentId) -1 +numberOfCols].id
           const newSquare = document.getElementById(newId)
           revealed(newSquare)
         }
-        if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !isRightEdge) {
+        if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !rightEdge) {
           const newId = allCells[parseInt(currentId) +1 +numberOfCols].id
           const newSquare = document.getElementById(newId)
           revealed(newSquare)
@@ -463,13 +512,13 @@ function checkAdjacentCell(currentId)
   {
     setTimeout(() => 
     {
-      if (currentId > 0 && !isLeftEdge) 
+      if (currentId > 0 && !leftEdge) 
       {
         const newId = allCells[parseInt(currentId) -1].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols-1) && !isRightEdge) 
+      if (currentId > (numberOfCols-1) && !rightEdge) 
       {
         const newId = allCells[parseInt(currentId) +1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
@@ -481,25 +530,25 @@ function checkAdjacentCell(currentId)
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId > (numberOfCols+1) && !isLeftEdge) 
+      if (currentId > (numberOfCols+1) && !leftEdge) 
       {
         const newId = allCells[parseInt(currentId) -1 -numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }     
-      if (currentId < (totalNumberOfCells-2) && !isRightEdge) 
+      if (currentId < (totalNumberOfCells-2) && !rightEdge) 
       {
         const newId = allCells[parseInt(currentId) +1].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId < (totalNumberOfCells-numberOfCols) && !isLeftEdge) 
+      if (currentId < (totalNumberOfCells-numberOfCols) && !leftEdge) 
       {
         const newId = allCells[parseInt(currentId) -1 +numberOfCols].id
         const newSquare = document.getElementById(newId)
         revealed(newSquare)
       }
-      if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !isRightEdge) 
+      if (currentId < (totalNumberOfCells-(numberOfCols+2)) && !rightEdge) 
       {
         const newId = allCells[parseInt(currentId) +1 +numberOfCols].id
         const newSquare = document.getElementById(newId)
@@ -541,11 +590,23 @@ function gameOver()
 function checkForFlagWin() 
 {
   let flagAndBombMatch = 0
+  let bombCount = 0;
   for (let i = 0; i < allCells.length; i++) 
   {
     if (allCells[i].classList.contains('flag') && allCells[i].classList.contains('bomb')) 
     {
       flagAndBombMatch ++
+    }
+    if(allCells[i].classList.contains('bomb') && !allCells[i].classList.contains('flag')) bombCount++ ;
+
+    if(bombCount == numberOfBombs)
+    {
+      stopTimer();
+      finalResult.innerHTML = "Your score is :"+timer+"s You are a <b>viking like RAGNAR</b>, YOU WON!";
+      smiley.classList.remove('face_down');
+      smiley.classList.add('face_win');
+      isGameOver = true
+      return 1;
     }
 
     if (flagAndBombMatch === numberOfBombs) 
@@ -555,25 +616,10 @@ function checkForFlagWin()
       smiley.classList.remove('face_down');
       smiley.classList.add('face_win');
       isGameOver = true
+      return 1;
     }
   }
 }
-
-// function checkForWin()
-// {
-//   for(let i=0; i< allCells.length; i++)
-//   {
-//     if(allCells[i].classList.contains('revealed') ) trackFlagAndRevealCell++;
-//   }
-//   if(trackFlagAndRevealCell === (totalNumberOfCells-numberOfBombs)) 
-//   {
-//     finalResult.innerHTML = 'You are a <b>viking like RAGNAR</b>, YOU WON!'
-//     smiley.classList.remove('face_down');
-//     smiley.classList.add('face_win');
-//     isGameOver = true
-//   }
-
-// }
 
 
 function smileyDown() 
@@ -601,9 +647,7 @@ function onTimerTick()
 function stopTimer()
 {
   let time = document.getElementById('timer');
-  console.log(time);
   timer = time.innerHTML;
-  time.setAttribute('id',"");
 }
 
 function updateTimer() 
