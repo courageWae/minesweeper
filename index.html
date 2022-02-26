@@ -1,40 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Minesweeper</title>
-  <link type="text/css" rel="stylesheet" href="./css/style.css" />
-</head>
-<body>
-  <div>
-    <h1> Minesweeper </h1>
-    <div style = "display:inline">
-      Level :
-    </div>
-    <div style = "display:inline">
-      <select id="difficulty" onchange="setDifficulty();">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+    <head>
+    
+        <title>Minesweeper</title>
 
-      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <span>Remaining Mines:</span>
-      <span id="flagCount" > </span>
-      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <span>Time:</span>
-      <span id="timer" > </span>
-      <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-    </div>
-    <div id="smiley" class="smiley" onmousedown="smileyDown();" onmouseup="smileyUp();"></div>
-   
-    <center>
-      <div id="gameBoard"></div>
-    </center>
-    <hr>
-    <div id="finalResult" style="color:red;"></div>
-  </div>
+        <link type="text/css" rel="stylesheet" href="./css/style.css" />
+        <script type="text/javascript" src="js/minesweeper.js" ></script>
 
-<script src="js/minesweeper.js" charset="utf-8"></script>
-</body>
+    </head>
+
+    <body>
+        <h1> Minesweeper </h1>
+
+        <div>
+            <select id="difficulty" onchange="setDifficulty();">
+               <option value="0">Easy</option>
+               <option value="1">Medium</option>
+               <option value="2">Hard</option>
+            </select>
+            
+            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>Remaining Mines:</span>
+            <span id="flagCount" > </span>
+            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>Time:</span>
+            <span id="timer" > </span>
+            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        </div>
+        
+        <div id="smiley" class="smiley" onmousedown="smileyDown();" onmouseup="smileyUp();" onclick="startGame();"></div>
+        
+        <div id="minefield"></div><br>
+        <div id="finalResult" class="filnalResult" hidden></div>
+    </body>
 </html>

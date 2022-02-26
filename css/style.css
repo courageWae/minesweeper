@@ -1,45 +1,51 @@
-#gameBoard 
-{
-  height: 230px;
-  width: 230px;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: #dcd6bc;
-  margin-left: 10px;
-  margin-top: 10px;
-  border: 10px solid #dcd6bc;
-  margin-bottom: 3px;
+.tile {
+  width: 16px;
+  height: 16px;
+  float: left;
+  background-image: url("../images/clear.png");
 }
 
-div 
-{
-  font-size: 18px;
-  text-align: center;
+.hidden {
+  background-image: url("../images/hidden.png");
 }
 
-.empty {
-  height: 20px;
-  width: 20px;
-  border: 2px solid;
-  border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
-  /* box-sizing: border-box; */
+.flag {
+  background-image: url("../images/flag.png");
 }
 
-.revealed {
-  height: 20px;
-  width: 20px;
-  border: 2px solid;
-  background-color: #80807e;
-  color:white;
-  border-color: #9c998d;
+.mine {
+  background-image: url("../images/mine.png");
+}
+.mine_hit {
+  background-image: url("../images/mine_hit.png");
+}
+.mine_marked {
+  background-image: url("../images/mine_marked.png");
 }
 
-.bomb 
-{
-  height: 20px;
-  width: 20px;
-  border: 2px solid;
-  border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
+.tile_1 {
+  background-image: url("../images/tile_1.png");
+}
+.tile_2 {
+  background-image: url("../images/tile_2.png");
+}
+.tile_3 {
+  background-image: url("../images/tile_3.png");
+}
+.tile_4 {
+  background-image: url("../images/tile_4.png");
+}
+.tile_5 {
+  background-image: url("../images/tile_5.png");
+}
+.tile_6 {
+  background-image: url("../images/tile_6.png");
+}
+.tile_7 {
+  background-image: url("../images/tile_7.png");
+}
+.tile_8 {
+  background-image: url("../images/tile_8.png");
 }
 
 .smiley {
@@ -48,7 +54,6 @@ div
   height: 26px;
   background-image: url("../images/face_up.png");
 }
-
 .face_down {
   background-image: url("../images/face_down.png");
 }
@@ -62,4 +67,21 @@ div
   background-image: url("../images/face_win.png");
 }
 
+h1 {
+  text-align: center;
+}
+div {
+  margin:auto;
+  text-align: center;
+}
 
+#finalResult{
+  margin:auto;
+  width:630px;
+  height:20px;
+  padding: 5px;
+  border-left: 5px;
+  border-left-style: outset;
+  border-left-color: brown;
+  background-color: bisque;
+}
