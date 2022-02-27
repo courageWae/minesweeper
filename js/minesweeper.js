@@ -38,9 +38,12 @@ function createTile(x, y) {
   tile.addEventListener("auxclick", function (e) { e.preventDefault(); }); // Middle Click
   tile.addEventListener("contextmenu", function (e) { e.preventDefault(); }); // Right Click
   tile.addEventListener("mouseup", handleTileClick); // All Clicks
+  tile.addEventListener("mousedown", addSmileyLimbo);
 
   return tile;
 }
+
+
 
 function startGame() {
   document.getElementById("flagCount").innerHTML = numberOfMines;
@@ -59,20 +62,36 @@ function smileyUp() {
   smiley.classList.remove("face_down");
 }
 
+
+function addSmileyLimbo()
+{
+  var smiley = document.getElementById("smiley");
+  smiley.classList.add("face_limbo");
+}
+
+function removeSmileyLimbo()
+{
+  var smiley = document.getElementById("smiley");
+  smiley.classList.remove("face_limbo");
+}
+
 function handleTileClick(event) {
   var flagUsed = 0;
   var tile = event.srcElement;
   var flagCount = document.getElementById("flagCount");
 
+
   // Left Click
   if (event.which === 1) {
     //TODO reveal the tile
+    removeSmileyLimbo();
     revealTile(tile);
    
   }
   // Middle Click
   else if (event.which === 2) {
     //TODO try to reveal adjacent
+    removeSmileyLimbo();
     if (tile.classList.contains("clear")) {
 
     }
@@ -82,6 +101,7 @@ function handleTileClick(event) {
   // Right Click
   else if (event.which === 3) {
     //TODO toggle a tile flag
+    removeSmileyLimbo();
     if (!tile.classList.contains("clear") ) {
       if (tile.classList.contains("flag")) {
         tile.classList.remove("flag");
@@ -93,7 +113,7 @@ function handleTileClick(event) {
           flagUsed++;
           flagCount.innerHTML = flagCount.innerHTML - flagUsed;
         }
-
+        win();
       }
     }
   }
@@ -108,7 +128,6 @@ function setDifficulty() {
   if (difficulty == 0) {
     flagCount.innerHTML = numberOfMines = 10;
     buildGrid(9, 9);
-    console.log("hello");
     setMineTile();
   }
   if (difficulty == 1) {
@@ -199,10 +218,33 @@ function setMineTile() {
   }
 }
 
+function win()
+{
+  var finalMessage = document.getElementById("finalResult");
+  var gameBoard = document.getElementById("minefield").children;
+  var smiley = document.getElementById("smiley");
+  var countMine = 0;
+ 
+  for(let tile of gameBoard)
+  {
+    if(tile.classList.contains("flag") && tile.getAttribute("data")) countMine++;
+    console.log(countMine);
+    if(countMine == numberOfMines)
+    {
+      smiley.classList.add("face_win");
+      finalMessage.removeAttribute("hidden");
+      finalMessage.innerHTML = "Congratulations You Won. You score is "+timeValue+". Refresh your browser to play another level";
+    }
+  }
+
+}
+
 function gameOver()
 {
   gameover = true;
   var finalMessage = document.getElementById("finalResult");
+  var smiley = document.getElementById("smiley");
+  smiley.classList.add("face_lose");
   finalMessage.removeAttribute("hidden");
   finalMessage.innerHTML = "Sorry your lost. You score is "+timeValue+". GAME OVER!. Refresh your browser to play another level";
 }
